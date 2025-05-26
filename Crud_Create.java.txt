@@ -1,0 +1,42 @@
+package crud_operation;
+
+import java.sql.Connection;
+import java.sql.Statement;
+import java.sql.ResultSet;
+import java.sql.ResultSetMetaData;
+
+public class CRUD_Operation {
+
+    public static void main(String[] args) {
+        DB_Connection db = new DB_Connection();
+        
+        try {
+            Connection conn = db.get_connection();
+            Statement stmt = conn.createStatement();
+            ResultSet r = stmt.executeQuery("SELECT * FROM student");
+            
+            ResultSetMetaData metaData = r.getMetaData();
+            int columnCount = metaData.getColumnCount();
+            
+            for (int i = 1; i <= columnCount; i++) {
+                System.out.print(metaData.getColumnName(i) + "\t");
+            }
+            System.out.println("\n----------------------------");
+            
+            while(r.next()) {
+                for (int i = 1; i <= columnCount; i++) {
+                    System.out.print(r.getString(i) + "\t");
+                }
+                System.out.println();
+            }
+            
+            r.close();
+            stmt.close();
+            conn.close();
+            
+        } catch(Exception e) {
+            System.out.println("sorry");
+          
+        }
+    }
+}
